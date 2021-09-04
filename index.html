@@ -1,0 +1,112 @@
+<!doctype html>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Oshinit leaflet autocomplete abd map</title>
+  <meta name="description" content="Full Stack Developer for contract.">
+  <meta name="author" content="SitePoint">
+
+  <meta property="og:title" content="JO demo">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://www.sitepoint.com/a-basic-html5-template/">
+  <meta property="og:description" content="A simple leaflet map and autocomplete web component.">
+  <meta property="og:image" content="dists/images/image.png">
+
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200&display=swap" rel="stylesheet" />
+  <link rel="icon" href="dists/images//favicon.ico">
+  <link rel="icon" href="dists/images/apple-icon-101.png" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="dists/images/apple-icon-101.png">
+  <link rel="stylesheet" href="src/main.css">
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500&display=swap');
+
+    * {
+      font-family: 'Noto Sans JP', sans-serif;
+    }
+
+    .title {
+      width: 100%;
+      padding: 40px 20px 0;
+      color: #fff;
+      font-size: 1.5rem;
+      font-weight: 500;
+      text-align: center;
+    }
+
+    .bg-app {
+      background-image: url('./src/image/red_keyboardbigstock.webp');
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+
+    .geocoder {
+      position: relative;
+      padding: 10px;
+    }
+
+    .map {
+        position: relative;
+        padding: 10px;
+        width: 100%;
+        height: calc(100vh - 100px);
+    }
+
+    @media only screen and (min-width: 728px) {
+      .geocoder {
+        padding: 10px 0 10px 10px;
+      }
+
+      .map {
+        padding: 10px 10px 10px 0;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: 1fr 2fr;
+        gap: 10px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="flex flex-row justify-center items-center min-h-screen bg-app bg-center bg-no-repeat bg-cover">  
+    <glass-layer style="position: relative; width: 100%;">
+      <h1 class="title">Leaflet Map with autocomplete geocoder</h1>
+      <div style="padding: 0 20px 20px;">
+        <glass-layer style="width: 100%; padding: 20px;">
+          <div class="grid">
+            <div class="geocoder">
+              <geocoder-autocomplete style="display: block;position: relative; width: 100%;"></geocoder-autocomplete>
+              <geocoder-output target="map-display"></geocoder-output>
+            </div>
+            <div class="map">
+              <map-display 
+                style="position: relative;"
+              >
+              </map-display>
+            </div>
+          </div>
+        </glass-layer>
+      </div>
+    </glass-layer>
+  </div>
+
+  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+  integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+  crossorigin=""></script>
+  <script type="module" src="src/web-components/glass-layer.js"></script>
+  <script type="module" src="src/web-components/geocoder-autocomplete.js"></script>
+  <script type="module" src="src/web-components/map-display.js"></script>
+</body>
+
+</html>
