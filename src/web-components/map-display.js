@@ -15,14 +15,12 @@ export class MapDisplay extends HTMLElement {
           let address = null;
           address = JSON.parse(newVal);
           this.render();
-          this.resetMap();
           this.init(address);
         }
     }
 
     render() { 
-        const template = document.createElement("template");
-        template.innerHTML = `
+        this.shadowRoot.innerHTML = `
         <style>
             #map-content, .map {
                 width: 100%;
@@ -37,7 +35,6 @@ export class MapDisplay extends HTMLElement {
         <div id="map-content">
             <div id="mapid" class="map"></div>
         </div>`;
-        this.shadowRoot.appendChild(template.content);
     }
 
     init(address) {
