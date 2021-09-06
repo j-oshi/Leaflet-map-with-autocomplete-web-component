@@ -15,14 +15,12 @@ export class MapDisplay extends HTMLElement {
           let address = null;
           address = JSON.parse(newVal);
           this.render();
-          this.resetMap();
           this.init(address);
         }
     }
 
     render() { 
-        const template = document.createElement("template");
-        template.innerHTML = `
+        this.shadowRoot.innerHTML = `
         <style>
             #map-content, .map {
                 width: 100%;
@@ -37,7 +35,6 @@ export class MapDisplay extends HTMLElement {
         <div id="map-content">
             <div id="mapid" class="map"></div>
         </div>`;
-        this.shadowRoot.appendChild(template.content);
     }
 
     init(address) {
@@ -66,16 +63,6 @@ export class MapDisplay extends HTMLElement {
         .bindPopup(label)
         .openPopup();;
         this.mapObject = map
-    }
-
-    resetMap() {
-        let container = null, newMapContainer = null;
-        container = this.shadowRoot.querySelector('#map-content');
-        container.innerHTML = "";
-        newMapContainer = document.createElement('div');
-        newMapContainer.setAttribute('id', 'mapid');
-        newMapContainer.setAttribute('class', 'map');
-        container.appendChild(newMapContainer);   
     }
 };
 customElements.define('map-display', MapDisplay);
