@@ -64,15 +64,5 @@ export class MapDisplay extends HTMLElement {
         .openPopup();;
         this.mapObject = map
     }
-
-    resetMap() {
-        let container = null, newMapContainer = null;
-        container = this.shadowRoot.querySelector('#map-content');
-        container.innerHTML = "";
-        newMapContainer = document.createElement('div');
-        newMapContainer.setAttribute('id', 'mapid');
-        newMapContainer.setAttribute('class', 'map');
-        container.appendChild(newMapContainer);   
-    }
 };
 customElements.define('map-display', MapDisplay);
