@@ -62,22 +62,12 @@ export class LazyIframe extends HTMLElement {
 
   connectedCallback() {
     let root = this;
-    window.addEventListener("load", (event) => {
+    window.addEventListener("load", () => {
       root.observer();
     }, false);
   }
 
   render() {
-    // const template = document.createElement("template");
-    // template.innerHTML = this.createIframe();
-    // `
-    //         <style>
-    //           .display {
-    //             width: 100%;
-    //             height: 100%;
-    //           }
-    //         </style>
-    //         <img class="display" src="600px-PlaceholderLC.png" style="display:none;" data-src="${this.img}">`;
     this.shadowRoot.appendChild(this.createIframe());
   }
 
