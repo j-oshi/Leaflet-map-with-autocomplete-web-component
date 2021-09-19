@@ -1,5 +1,5 @@
 /* Run function once */
-let onceOnly = f => {
+export let onceOnly = f => {
     let hasRun = false;
     return () => {
         if (!hasRun) {

@@ -1,4 +1,4 @@
-import { GlassLayer } from "../src/js/glass-layer";
+import { GlassLayer } from "../src/web-components/glass-layer";
 
 export default {
     title: 'Components/Glass Layer',
