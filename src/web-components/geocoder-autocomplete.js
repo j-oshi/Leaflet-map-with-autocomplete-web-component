@@ -1,3 +1,5 @@
+import { config } from '../../config.js';
+
 export class GeocoderAutocomplete extends HTMLElement {
   static get observedAttributes() {
     return [ 'selected-address'];
@@ -114,7 +116,7 @@ export class GeocoderAutocomplete extends HTMLElement {
     geoOutput = document.querySelector('geocoder-output');
     if (searchInput?.value && searchInput?.value !== "") {
       let url = null, data = null; 
-      url = `https://api.openrouteservice.org/geocode/autocomplete?api_key=5b3ce3597851110001cf6248f5c0424103c24f22bbb754ebf15c455c&text=${searchInput?.value}&boundary.country=GB&sources=openstreetmap`;
+      url = `https://api.openrouteservice.org/geocode/autocomplete?api_key=${config.MAP_KEY}&text=${searchInput?.value}&boundary.country=GB&sources=openstreetmap`;
       data = await this.fetchAndDecode(url, 'text');
       geoOutput?.setAttribute('data', data);
     } else {
