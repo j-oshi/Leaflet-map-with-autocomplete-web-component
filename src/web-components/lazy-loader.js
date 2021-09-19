@@ -9,7 +9,7 @@ export class LazyImage extends HTMLElement {
   connectedCallback() {
     this.render();
     let root = this;
-    window.addEventListener("load", (event) => {
+    window.addEventListener("load", () => {
       root.observer();
     }, false);
   }
