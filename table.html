@@ -1,0 +1,473 @@
+<!doctype html>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Oshinit Route Planner</title>
+  <meta name="description" content="Full Stack Developer for contract.">
+  <meta name="author" content="SitePoint">
+
+  <meta property="og:title" content="JO demo">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://www.sitepoint.com/a-basic-html5-template/">
+  <meta property="og:description" content="A simple leaflet map and autocomplete web component.">
+  <meta property="og:image" content="dists/images/image.png">
+
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200&display=swap" rel="stylesheet" />
+  <link rel="icon" href="dists/images//favicon.ico">
+  <link rel="icon" href="dists/images/apple-icon-101.png" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="dists/images/apple-icon-101.png">
+
+  <style>
+    body {
+      margin: 0px;
+      min-height: 100vh;
+    }
+
+    .header {
+      padding: 20px;
+      text-align: center;
+      background: #1abc9c;
+      color: white;
+      font-size: 2rem;
+    }
+
+    .section {
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      padding: 2rem;
+      box-sizing: border-box;
+      gap: 0.25rem;
+    }
+
+    .upload-button {
+      display: inline-block;
+      padding: 8px 12px;
+      cursor: pointer;
+      background-color: #1abc9c;
+      font-size: 1em;
+      color: #fff;
+    }
+
+    .upload-section {
+      width: 100%;
+      padding: 8px;
+      box-sizing: border-box;
+    }
+
+    .upload-content {
+      display: flex;
+      width: 100%;
+      align-items: center;
+      justify-content: space-evenly;
+      margin-bottom: 10px;
+    }
+
+    .clear-upload {
+      border-radius: 50%;
+      padding: 0.5em;
+      width: 30px;
+      height: 30px;
+      border: 2px solid #1abc9c;
+      color: #ffffff;
+      position: relative;
+      cursor: pointer;
+    }
+
+    .clear-upload:hover {
+      border: 2px solid #1abc9c;
+      background-color: #ffffff;
+      color: #1abc9c;
+    }
+
+    .clear-upload::before {
+      content: " ";
+      position: absolute;
+      display: block;
+      background-color: #1abc9c;
+      width: 2px;
+      left: 12px;
+      top: 5px;
+      bottom: 5px;
+      transform: rotate(45deg);
+    }
+
+    .clear-upload::after {
+      content: " ";
+      position: absolute;
+      display: block;
+      background-color: #1abc9c;
+      height: 2px;
+      top: 12px;
+      left: 5px;
+      right: 5px;
+      transform: rotate(45deg);
+    }
+
+    .hide-clear-upload {
+      display: none;
+    }
+
+    input[type="file"] {
+      position: absolute;
+      z-index: -1;
+      top: 6px;
+      left: 0;
+      font-size: 1em;
+      color: rgb(153, 153, 153);
+      padding: 0 0 0 1.38rem;
+    }
+
+    .button-wrap {
+      position: relative;
+      white-space: nowrap;
+      display: block;
+    }
+
+    .btn {
+      background-color: #1abc9c;
+      /* Green */
+      border: none;
+      color: white;
+      padding: 8px 16px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 1em;
+      font-weight: bold;
+      margin: 4px 2px;
+      cursor: pointer;
+    }
+
+    .btn-circle {
+      height: 40px;
+      line-height: 40px;
+      width: 40px;
+      font-size: 2em;
+      font-weight: bold;
+      border-radius: 50%;
+      background-color: #1abc9c;
+      color: white;
+      text-align: center;
+      cursor: pointer;
+    }
+
+    .btn:hover,
+    .btn-circle:hover,
+    .upload-button:hover {
+      box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    }
+
+    .btn:focus,
+    .btn-circle:focus {
+      border: 1px solid #000;
+    }
+
+    .destination-cell,
+    .destination-cell-header {
+      width: 100%;
+    }
+
+    table {
+      border-collapse: collapse;
+      width: 100%;
+    }
+
+    #table {
+      overflow-x: auto;
+    }
+
+    th,
+    td {
+      text-align: left;
+      padding: 8px;
+    }
+
+    tr:nth-child(odd) {
+      background-color: #f2f2f2;
+    }
+
+    .titleRow {
+      font-weight: 600;
+    }
+
+    .button-container {
+      display: flex;
+      width: 100%;
+      justify-content: space-between;
+      padding: 0.5rem;
+      box-sizing: border-box;
+    }
+
+    .grid-content {
+      display: flex;
+      width: 100%;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .grid-content input {
+      padding: 5px;
+      box-sizing: border-box;
+      height: 2.22rem;
+      margin-top: 4.5px;
+    }
+
+    .grid-table-button-container {
+      display: flex;
+      width: 100%;
+      justify-content: flex-end;
+      padding: 0.5rem;
+      box-sizing: border-box;
+    }
+
+    footer {
+      position: sticky;
+      top: 100vh;
+      display: flex;
+      left: 0;
+      bottom: 0;
+      width: 100%;
+      background-color: #1abc9c;
+      color: white;
+      justify-content: center;
+    }
+
+    /* Style the buttons that are used to open and close the accordion panel */
+    .accordion {
+      background-color: #eee;
+      color: #444;
+      cursor: pointer;
+      padding: 18px;
+      width: 100%;
+      text-align: left;
+      border: none;
+      outline: none;
+      transition: 0.4s;
+    }
+
+    /* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
+    .active,
+    .accordion:hover {
+      background-color: #ccc;
+    }
+
+    .accordion:after {
+      content: '\02795';
+      /* Unicode character for "plus" sign (+) */
+      font-size: 13px;
+      color: #777;
+      float: right;
+      margin-left: 5px;
+    }
+
+    .active:after {
+      content: "\2796";
+      /* Unicode character for "minus" sign (-) */
+    }
+
+    /* Style the accordion panel. Note: hidden by default */
+    .panel {
+      position: relative;
+      z-index: 10;
+      padding: 0 18px;
+      background-color: white;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.2s ease-out;
+    }
+
+    #grid-table {
+      margin-bottom: 10px;
+    }
+
+    h2.headings {
+      margin-bottom: 20px;
+    }
+
+    .stat-card h3 {
+      font-size: 16px;
+      margin-top: 5px;
+      line-height: 20px;
+      padding-right: 45px;
+      color: #333;
+      text-align: left;
+    }
+
+    .stat-card {
+      position: relative;
+      display: inline-block;
+      background-color: #fff;
+      width: 320px;
+      min-height: 120px;
+      text-align: left;
+      padding: 15px;
+      border-width: 1px;
+      border-style: solid;
+      border-color: rgb(204, 204, 204);
+      border-image: initial;
+      overflow: hidden;
+    }
+
+    .stat-icon {
+      position: absolute;
+      top: 0px;
+      right: 0px;
+      width: 60px;
+      height: 60px;
+      line-height: 60px;
+      text-align: center;
+    }
+
+    .stat-icon.right {
+      right: 0px;
+    }
+
+    .stat-icon span {
+      position: absolute;
+      z-index: 8;
+      top: -40px;
+      left: 5px;
+      width: 100px;
+      height: 100px;
+      line-height: 120px;
+      border-radius: 50%;
+    }
+
+    .stat-icon i {
+      padding-left: 15px;
+      color: rgb(255, 255, 255);
+      z-index: 9;
+      font-size: 24px;
+    }
+
+    .bg-target {
+      background-color: #E07000;
+    }
+
+    .txt-target {
+      color: #E07000;
+    }
+
+    .bg-ontrack {
+      background-color: #007613;
+    }
+
+    .txt-ontrack {
+      color: #1abc9c;
+    }
+
+    .bg-failing {
+      background-color: #D43E3A;
+    }
+
+    .txt-failing {
+      color: #D43E3A;
+    }
+
+    .bg-measure {
+      background-color: #186EA5;
+    }
+
+    .txt-measure {
+      color: #186EA5;
+    }
+
+    .stat-card h4.stat-num {
+      font-size: 1rem;
+      text-align: left;
+      margin: 0.8rem 0;
+    }
+
+    .stat-card .subtext {
+      font-size: 15px;
+    }
+
+    .stat-card .source {
+      font-size: 12px;
+      margin-top: 15px;
+    }
+
+    .stat-card .open-btn {
+      margin-top: 15px;
+    }
+
+    .result-section {
+      position: relative;
+      display: flex;
+      width: 100%;
+      justify-content: center;
+      padding: 1rem;
+      box-sizing: content-box;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="header">
+    <h1>Route Planner</h1>
+    <p>Find the shortest route between locations.</p>
+  </div>
+  <div class="section">
+    <button class="accordion">Find by coordinates</button>
+    <div class="panel">
+      <div class="upload-section">
+        <h2 style="text-align:center;">Click on the "Choose File" button to upload a file:</h2>
+        <div class="upload-content">
+          <div class="button-wrap">
+            <label class="upload-button" for="upload"> Upload CV
+              <input id="upload" type="file" name="filename">
+          </div>
+          <button class="clear-upload hide-clear-upload"></button>
+        </div>
+      </div>
+      <div class="route-destinations">
+        <table cellpadding="0" cellspacing="0">
+          <tr>
+            <td><input class="destination-cell" type="text" placeholder="Enter location" data-type="name" /></td>
+            <td><input class="destination-cell" type="number" step="any" placeholder="Enter latitude"
+                data-type="latitude" /></td>
+            <td><input class="destination-cell" type="number" step="any" placeholder="Enter longitude"
+                data-type="longitude" /></td>
+            <td style="text-align:right"><button class="delete-row">delete</button></td>
+          </tr>
+        </table>
+      </div>
+      <div class="button-container">
+        <div class="btn-circle add-to-list">+</div>
+        <button class="btn convert-to-distance-matrix">Convert list</button>
+      </div>
+      <div id="table"></div>
+      <div class="optimized-route"></div>
+    </div>
+
+    <button class="accordion">Find by distance</button>
+    <div class="panel">
+      <div class="upload-section">
+        <h2 style="text-align:center;">Type number of rows and click to create table.</h2>
+        <div class="grid-content">
+          <input id="grid-number" type="number" min="1" max="5" />
+          <button class="btn create-grid">Create grid table</button>
+        </div>
+      </div>
+
+      <div id="grid-table"></div>
+      <div class="grid-table-button-container">
+        <button class="btn distance-matrix-to-object">Find shortest route</button>
+      </div>
+      <div class="optimized-route-2"></div>
+    </div>
+  </div>
+
+  <footer>
+    <p>© Copyright, Oshinit 2022. All Rights Reserved.</p>
+  </footer>
+  <script type="module" src="src/js/route-planner.js"></script>
+</body>
+
+</html>

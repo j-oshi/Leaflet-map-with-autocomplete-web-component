@@ -1,0 +1,129 @@
+.IsOpenedToday {
+    color: green;
+}
+
+.IsClosedToday {
+    color: red;
+}
+
+.business-time-panel {
+    margin: 10px;
+}
+
+.day-time-panel {
+    display: flex;
+    flex: row;  
+    padding: 15px;
+    margin: 5px 10px; 
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+}
+
+.day-time-panel:hover {
+    box-shadow: 0 12px 23px rgba(0, 0, 0, 0.23), 0 10px 10px rgba(0, 0, 0, 0.19);
+}
+
+.day-time-panel > .day-time-title {
+    width: 100px;
+    flex: 0 0 100px;
+    text-align: left;
+    text-transform: capitalize;
+}
+
+.day-time-panel > .day-time-control {
+    flex: 1;
+}
+
+.day-time-control > div:not(:last-of-type)  {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 10px;
+}
+
+.day-time-control > div > span {
+    width: 60px;
+    padding-top: 2.5px;
+    text-align: center;
+    display: table-cell;
+    vertical-align: middle;
+    line-height: normal;
+}
+
+.day-time-control > div > double-range-slider {
+    flex: 1;
+}
+
+.day-time-control-buttons, .day-time-save-buttons {
+    display: flex;
+    justify-content: space-between;
+}
+
+.day-time-save-buttons {
+    padding: 10px;
+}
+
+.day-time-control-buttons > div > button, .day-time-save-buttons > button, .delete {
+    border: none; 
+    color: white; 
+    padding: 7px 14px; 
+    cursor: pointer; 
+    font-size: 12px;
+    border-radius: 3px;
+    margin-left: 3px;
+}
+
+.day-time-control-buttons > div > button {
+    background-color: #2196F3;
+}
+
+.day-time-save-buttons > button {
+    background-color: #04AA6D;
+}
+
+.day-time-control-buttons > div > button:hover{
+    background: #0b7dda;
+}
+
+.day-time-save-buttons > button:hover{
+    background: #46a049
+}
+
+.business-hours {
+    display: flex;
+    flex-direction: column;
+}
+
+.business-hours > div {
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+}
+
+.business-hours > div > div:first-child {
+    width: 100px;
+    flex: 0 0 100px;
+    text-align: left;
+}
+
+.day-time-panel:first-child .day-time-control-buttons button:last-child {
+    display: none;
+}
+
+.delete {
+    background: #c0392b;
+    font-size: 10px;
+    padding: 5px 10px !important; 
+}
+
+.delete:hover {
+    background: darkorange;
+}
+
+.condensed {
+    transition: ease-in-out 0.2s;
+    box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.25);
+}
+
+.day-time-error {
+    color: rgb(211, 74, 74);
+    font-size: 12px;
+}

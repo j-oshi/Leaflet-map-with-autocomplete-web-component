@@ -21,6 +21,7 @@
   <link rel="icon" href="dists/images/apple-icon-101.png" type="image/svg+xml">
   <link rel="apple-touch-icon" href="dists/images/apple-icon-101.png">
   <link rel="stylesheet" href="src/main.css">
+  <link rel="stylesheet" href="src/ma.css">
 
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500&display=swap');
@@ -54,10 +55,10 @@
     }
 
     .map {
-        position: relative;
-        padding: 10px;
-        width: 100%;
-        height: calc(100vh - 100px);
+      position: relative;
+      padding: 10px;
+      width: 100%;
+      height: calc(100vh - 100px);
     }
 
     @media only screen and (min-width: 728px) {
@@ -79,7 +80,7 @@
 </head>
 
 <body>
-  <div class="flex flex-row justify-center items-center min-h-screen bg-app bg-center bg-no-repeat bg-cover">  
+  <div class="flex flex-row justify-center items-center min-h-screen bg-app bg-center bg-no-repeat bg-cover">
     <glass-layer style="position: relative; width: 100%;">
       <h1 class="title">Leaflet Map with autocomplete geocoder</h1>
       <div style="padding: 0 20px 20px;">
@@ -90,9 +91,7 @@
               <geocoder-output target="map-display"></geocoder-output>
             </div>
             <div class="map">
-              <map-display 
-                style="position: relative;"
-              >
+              <map-display style="position: relative;">
               </map-display>
             </div>
           </div>
@@ -100,13 +99,270 @@
       </div>
     </glass-layer>
   </div>
+  <!-- <double-range-slider data-min="0" data-max="1440" step="60"></double-range-slider>
+  <double-range-slider data-min="0" data-max="1440" step="60"></double-range-slider>
+  <double-range-slider data-min="0" data-max="1440" step="60"></double-range-slider>
+  <double-range-slider data-min="0" data-max="1440" step="60"></double-range-slider>
+  <double-range-slider data-min="0" data-max="1440" step="60"></double-range-slider> -->
+  <div id="table-demo"></div>
+  <!-- step="60" min-value="360" max-value="1080" -->
+  <div style="display: flex;flex: row;">
+    <span style="width: 50px;flex: 0 0 50px;text-align: center;"></span>
+    <double-range-slider style="flex: 1;" min="0" max="1440"></double-range-slider>
+    <span style="width: 50px;flex: 0 0 50px;text-align: center;"></span>
+  </div>
 
+  <div id="grid-table-demo"></div>
+  <div id="business-demo"></div>
+  <div id="business-demo2"></div>
   <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
-  integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
-  crossorigin=""></script>
+    integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+    crossorigin=""></script>
   <script type="module" src="src/web-components/glass-layer.js"></script>
   <script type="module" src="src/web-components/geocoder-autocomplete.js"></script>
   <script type="module" src="src/web-components/map-display.js"></script>
+  <script type="module" src="src/web-components/double-range-slider.js"></script>
+  <script type="module">
+    import { table } from "../src/js/table.mjs";
+    import { jsonToTable, tableToCsv } from '../src/js/converter.mjs';
+    import { generateGridCellData } from '../src/js/grid.mjs';
+    import { businessTimes, businessTimesPanel } from '../src/js/business-hours.mjs';
+
+    let tableNode = null, tableEl = null, gridTable = null;
+    tableEl = document.querySelector("#table-demo");
+    tableEl.innerHTML = null;
+
+    let testData = [
+      { statement: 12, value: 34 },
+      { statement: 3, value: 4 },
+      { statement: "", value: 34 },
+      { statement: 34, value: 3 },
+      { statement: "", value: 4 },
+      { statement: 675, value: 34 }
+    ]
+
+    // let data = [
+    //   ["Stateme", "Value"],
+    //   ["Statement", "Value"],
+    //   ["", "Value"],
+    //   ["Statement", "Value"],
+    //   ["", "Value"],
+    // ];
+
+    let data = jsonToTable(testData, ["Statement is", "Value"]);
+    // console.log(tableToCsv(data));
+
+    tableNode = table();
+    tableNode.caption("Report Statement");
+    tableNode.build(data);
+    // console.log(tableNode.display());
+    tableEl.appendChild(tableNode.display());
+    // console.log(tableNode.saveToCSV());
+    // console.log(tableNode.saveToJson(['ft', 'gyf']));
+    let dataSpan = [
+      { row: 2, col: 0, rowspan: 2, colspan: 0 },
+      { row: 4, col: 0, rowspan: 2, colspan: 0 },
+      { row: 6, col: 0, rowspan: 2, colspan: 0 },
+    ];
+    tableNode.addTableSpan(dataSpan);
+
+    // console.log(jsonToTable(dataSpan));
+
+
+    // console.log(generateGridCellData(5));
+    gridTable = document.querySelector("#grid-table-demo");
+    gridTable.innerHTML = null;
+
+    let gridNode = table();
+    // gridNode.caption("Report Statement");
+    gridNode.build(generateGridCellData(5));
+    // console.log(gridNode.display());
+    gridTable.appendChild(gridNode.display());
+
+
+    
+
+    const sampleData = [
+      {
+        day: 'sunday',
+        period: []
+      },
+      {
+        day: 'monday',
+        period: [
+          { time: '10:30 - 12:00' }
+        ]
+      },
+      {
+        day: 'tuesday',
+        period: [
+          { time: '10:30 - 12:00' }
+        ]
+      },
+      {
+        day: 'wednesday',
+        period: [
+          { time: '10:30 - 12:00' },
+          { time: '14:30 - 16:00' },
+          { time: '18:30 - 20:00' }
+        ]
+      },
+      {
+        day: 'thursday',
+        period: [
+          { time: '10:30 - 12:00' },
+          { time: '14:30 - 16:00' },
+          { time: '18:30 - 20:00' }
+        ]
+      },
+      {
+        day: 'friday',
+        period: [
+          { time: '10:30 - 12:00' },
+          { time: '14:30 - 16:00' },
+          { time: '18:30 - 20:00' }
+        ]
+      },
+      {
+        day: 'saturday',
+        period: []
+      },
+    ];
+
+    let business = businessTimesPanel();
+    let businessEl = document.querySelector("#business-demo");
+    businessEl.appendChild(business.display());
+    business.restoreState(sampleData);
+
+
+    let businessdemo = businessTimes();
+    businessdemo.setData(sampleData);
+
+    // let businessEldemo = document.querySelector("#business-demo2");
+    // businessEldemo.appendChild(businessdemo.display());
+    // businessdemo.currentDateDisplay();
+
+    // const INTERVALS = [
+    //   ['14:00', '15:00'],
+    //   ['08:00', '12:30'],
+    //   ['12:35', '12:36'],
+    //   ['13:35', '13:50'],
+    // ];
+
+
+    // function convertTimeToNumber(time) {
+    //   const hours = Number(time.split(':')[0]);
+    //   const minutes = Number(time.split(':')[1]) / 60;
+    //   return hours + minutes;
+    // }
+
+    // // assuming current intervals do not overlap
+    // function sortIntervals(intervals) {
+    //   return intervals.sort((intA, intB) => {
+    //     const startA = convertTimeToNumber(intA[0]);
+    //     const endA = convertTimeToNumber(intA[1]);
+
+    //     const startB = convertTimeToNumber(intB[0]);
+    //     const endB = convertTimeToNumber(intB[1]);
+
+    //     if (startA > endB) {
+    //       return 1
+    //     }
+
+    //     if (startB > endA) {
+    //       return -1
+    //     }
+
+    //     return 0;
+    //   })
+    // }
+
+
+    // function isOverlapping(intervals, newInterval) {
+    //   const a = convertTimeToNumber(newInterval[0]);
+    //   const b = convertTimeToNumber(newInterval[1]);
+
+    //   for (const interval of intervals) {
+    //     const c = convertTimeToNumber(interval[0]);
+    //     const d = convertTimeToNumber(interval[1]);
+
+    //     if (a < d && b > c) {
+    //       console.log('This one overlap: ', newInterval);
+    //       console.log('with interval: ', interval);
+    //       console.log('----');
+    //       return true;
+    //     }
+    //   }
+
+    //   return false;
+    // }
+
+    // function isGoodInterval(interval) {
+    //   let good = false;
+
+    //   if (interval.length === 2) {
+    //     // If you want you can also do extra check if this is the same day
+    //     const start = convertTimeToNumber(interval[0]);
+    //     const end = convertTimeToNumber(interval[1]);
+
+    //     if (start < end) {
+    //       good = true;
+    //     }
+    //   }
+
+    //   return good;
+    // }
+
+    // function addInterval(interval) {
+    //   if (!isGoodInterval(interval)) {
+    //     console.log('This is not an interval');
+    //     return;
+    //   }
+
+    //   if (!isOverlapping(INTERVALS, interval)) {
+    //     INTERVALS.push(interval);
+
+    //     // you may also want to keep those intervals sorted
+    //     const sortedIntervals = sortIntervals(INTERVALS);
+    //     console.log('Sorted intervals', sortedIntervals);
+    //   }
+    // }
+
+    // const goodIntervals = [
+    //   ['05:31', '06:32'],
+    //   ['16:00', '17:00'],
+    //   ['12:31', '12:34']
+    // ];
+
+    // let goodCount = 0;
+    // for (const goodInterval of goodIntervals) {
+    //   if (!isOverlapping(INTERVALS, goodInterval)) {
+    //     goodCount += 1
+    //   }
+    // }
+
+    // console.log('Check good intervals: ', goodCount === goodIntervals.length);
+
+    // const ovelappingIntervals = [
+    //   ['09:30', '12:40'],
+    //   ['05:36', '08:50'],
+    //   ['13:36', '13:37'],
+    //   ['06:00', '20:00'],
+    //   ['14:00', '15:00']
+    // ]
+
+    // let badCount = 0;
+    // for (const badInterval of ovelappingIntervals) {
+    //   if (isOverlapping(INTERVALS, badInterval)) {
+    //     badCount += 1
+    //   }
+    // }
+
+    // console.log('Check bad intervals: ', badCount === ovelappingIntervals.length);
+
+    // addInterval(goodIntervals[0]);
+    
+  </script>
 </body>
 
 </html>
